@@ -1,64 +1,56 @@
 <script>
-  import BookCard from "./BookCard.svelte";
+  import Router from 'svelte-spa-router'
+  import routes from './router/index'
 
-  let title = "";
-  let price = 0;
-  let description = "";
+  import BookCard from './BookCard.svelte'
+  import TabBar from './Tab-bar.svelte'
 
-  let books = [];
-  let booksInCart = [];
+  export let name
 
-  $: booksNumInCart = booksInCart.length;
-  $: totalCheckoutPrice = booksInCart.reduce(
-    (sum, book) => sum + book.price,
-    0
-  );
+  let title = ''
+  let price = 0
+  let description = ''
+
+  let books = []
+  let booksInCart = []
+
+  // 计算属性
+  $: booksNumInCart = booksInCart.length
+  $: totalCheckoutPrice = booksInCart.reduce((sum, book) => sum + book.price, 0)
 
   function handleAddBook() {
-    books = books.concat({ title, price, description });
-    title = "";
-    price = 0;
-    description = "";
+    books = books.concat({ title, price, description })
+    // 重置
+    title = ''
+    price = 0
+    description = ''
   }
 
   function handleAddToCart(title) {
-    let bookNeededToBeAdded = books.find(book => book.title == title);
-    booksInCart = booksInCart.concat(bookNeededToBeAdded);
+    let bookNeededToBeAdded = books.find(book => book.title == title)
+    booksInCart = booksInCart.concat(bookNeededToBeAdded)
   }
+
+  const tabList = [
+    {
+      title: '首页',
+      path: '/home',
+    },
+    {
+      title: '关于',
+      path: '/aboult',
+    },
+    {
+      title: '我的',
+      path: '/profile',
+    },
+  ]
 </script>
 
-<style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-  }
-
-  button {
-    background-color: #ff3e00;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-  }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
-  }
-</style>
-
 <main>
-  <h1>Welcome to my online bookstore!</h1>
+  <TabBar {tabList} />
+  <Router {routes} />
+  <h1>Welcome to my online {name}!</h1>
   <section>
     <h2>Add new book</h2>
     <label for="title">Title</label>
@@ -90,3 +82,33 @@
     {/each}
   </section>
 </main>
+
+<style>
+  main {
+    text-align: center;
+    padding: 1em;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    color: #ff3e00;
+    text-transform: uppercase;
+    font-size: 4em;
+    font-weight: 100;
+  }
+
+  button {
+    background-color: #ff3e00;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+  }
+
+  @media (min-width: 640px) {
+    main {
+      max-width: none;
+    }
+  }
+</style>
