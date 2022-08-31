@@ -4,21 +4,21 @@
 
   let currentIndex = 0
 
-  const tabItemClick = (tabItem, index) => {
+  const tabItemClick = (path, index) => {
     currentIndex = index
-    push(tabItem.path)
+    push(path)
   }
 </script>
 
 <div class="container flex">
   <div class="content flex">
-    {#each tabList as tabItem}
+    {#each tabList as { title, path }, index}
       <!-- 动态属性 class -->
       <div
-        on:click={() => tabItemClick(tabItem, tabList.indexOf(tabItem))}
-        class:active={currentIndex === tabList.indexOf(tabItem)}
+        on:click={() => tabItemClick(path, index)}
+        class:active={currentIndex === index}
       >
-        {tabItem.title}
+        {title}
       </div>
     {/each}
   </div>
